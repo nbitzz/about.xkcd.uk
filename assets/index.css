@@ -46,6 +46,11 @@ code {
     box-shadow: 0 0 100px white;
 }
 
+.tip {
+    font-style: oblique;
+    text-align: center;
+}
+
 /* hljs stuff */
 
 .hljs-keyword { color: #ff7b72; }
