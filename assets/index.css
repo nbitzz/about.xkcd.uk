@@ -42,7 +42,7 @@ code {
     tab-size: 4;
 }
 
-#content > a > img {
+#content > h2 > a > img {
     box-shadow: 0 0 100px white;
 }
 
