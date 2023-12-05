@@ -42,6 +42,10 @@ code {
     tab-size: 4;
 }
 
+#content > a > img {
+    box-shadow: 0 0 100px white;
+}
+
 /* hljs stuff */
 
 .hljs-keyword { color: #ff7b72; }
