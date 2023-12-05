@@ -39,28 +39,28 @@
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
     <span class="hljs-keyword">async</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-params">request, env, ctx</span>) {
-    <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(request.<span class="hljs-property">url</span>);
+        <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(request.<span class="hljs-property">url</span>);
 
-    <span class="hljs-keyword">if</span> (xkcd_number_check.<span class="hljs-title function_">test</span>(url.<span class="hljs-property">pathname</span>)) 
-        <span class="hljs-comment">// Hey, they're using a number!</span>
-        <span class="hljs-comment">// Let's redirect them to xkcd.com/$1.</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">redirect</span>(<span class="hljs-string">`https://xkcd.com/<span class="hljs-subst">${xkcd_number_check.exec(url.pathname)?.[<span class="hljs-number">1</span>]}</span>`</span>)
-    <span class="hljs-comment">// Oh, they're not using a number...</span>
-    <span class="hljs-comment">// Let's conduct a search, then.</span>
-    <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">let</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">"https://duckduckgo.com/?q="</span> + <span class="hljs-built_in">encodeURIComponent</span>(<span class="hljs-string">`\\site:xkcd.com <span class="hljs-subst">${url.pathname.slice(<span class="hljs-number">1</span>)}</span>`</span>));
-        <span class="hljs-keyword">let</span> html = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">text</span>()
-        <span class="hljs-keyword">let</span> $ = <span class="hljs-title function_">load</span>(html)
+        <span class="hljs-keyword">if</span> (xkcd_number_check.<span class="hljs-title function_">test</span>(url.<span class="hljs-property">pathname</span>)) 
+            <span class="hljs-comment">// Hey, they're using a number!</span>
+            <span class="hljs-comment">// Let's redirect them to xkcd.com/$1.</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">redirect</span>(<span class="hljs-string">`https://xkcd.com/<span class="hljs-subst">${xkcd_number_check.exec(url.pathname)?.[<span class="hljs-number">1</span>]}</span>`</span>)
+        <span class="hljs-comment">// Oh, they're not using a number...</span>
+        <span class="hljs-comment">// Let's conduct a search, then.</span>
+        <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">let</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">"https://duckduckgo.com/?q="</span> + <span class="hljs-built_in">encodeURIComponent</span>(<span class="hljs-string">`\\site:xkcd.com <span class="hljs-subst">${url.pathname.slice(<span class="hljs-number">1</span>)}</span>`</span>));
+            <span class="hljs-keyword">let</span> html = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">text</span>()
+            <span class="hljs-keyword">let</span> $ = <span class="hljs-title function_">load</span>(html)
 
-        <span class="hljs-keyword">let</span> content = $(<span class="hljs-string">`meta[http-equiv=refresh]`</span>).<span class="hljs-title function_">get</span>(<span class="hljs-number">0</span>)?.<span class="hljs-property">attribs</span>.<span class="hljs-property">content</span>
-        <span class="hljs-keyword">let</span> ddg_redirect_pathname = content?.<span class="hljs-title function_">match</span>(ddg_parsing_regex)?.[<span class="hljs-number">1</span>]
-        <span class="hljs-keyword">let</span> ddg_url = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">`https://duckduckgo.com<span class="hljs-subst">${ddg_redirect_pathname}</span>`</span>).<span class="hljs-property">searchParams</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">"uddg"</span>)
-        
-        <span class="hljs-keyword">if</span> (content &amp;&amp; ddg_redirect_pathname &amp;&amp; ddg_url) {
-        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">redirect</span>(ddg_url)
+            <span class="hljs-keyword">let</span> content = $(<span class="hljs-string">`meta[http-equiv=refresh]`</span>).<span class="hljs-title function_">get</span>(<span class="hljs-number">0</span>)?.<span class="hljs-property">attribs</span>.<span class="hljs-property">content</span>
+            <span class="hljs-keyword">let</span> ddg_redirect_pathname = content?.<span class="hljs-title function_">match</span>(ddg_parsing_regex)?.[<span class="hljs-number">1</span>]
+            <span class="hljs-keyword">let</span> ddg_url = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">`https://duckduckgo.com<span class="hljs-subst">${ddg_redirect_pathname}</span>`</span>).<span class="hljs-property">searchParams</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">"uddg"</span>)
+            
+            <span class="hljs-keyword">if</span> (content &amp;&amp; ddg_redirect_pathname &amp;&amp; ddg_url) {
+            <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">redirect</span>(ddg_url)
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(html, {<span class="hljs-attr">headers</span>: response.<span class="hljs-property">headers</span>})
         }
-        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(html, {<span class="hljs-attr">headers</span>: response.<span class="hljs-property">headers</span>})
-    }
     },
 };
                 </code>
