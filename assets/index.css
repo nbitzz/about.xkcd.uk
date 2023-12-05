@@ -1,0 +1,48 @@
+body {
+    background-color: #0D1117;
+    font-family: sans-serif;
+}
+
+#content {
+    background-color: #24292E;
+    color: #c9d1d9;
+    max-width: 40em;
+    padding: 20px;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+}
+
+p {
+    text-align: justify;
+}
+
+p:nth-last-of-type(1) {
+    margin-bottom: 0;
+    text-align: left;
+}
+
+a {
+    margin: auto;
+    color: #8b949e;
+}
+
+.codecontainer {
+    overflow: auto;
+    padding: 20px;
+}
+
+code {
+    white-space: pre;
+    tab-size: 4;
+}
+
+/* hljs stuff */
+
+.hljs-keyword { color: #ff7b72; }
+.hljs-string, .hljs-regexp { color: #a5d6ff; }
+.hljs-title.function_ { color: #d2a8ff; }
+.hljs-comment { color: #8b949e; }
+.hljs-built_in { color: #ffa657 }

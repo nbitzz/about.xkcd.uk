@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>xkcd.uk</title>
+        <meta name="title" content="xkcd.uk">
+        <meta name="description" content="the XKCD URL shortener / auto search">
+    
+        <link rel="stylesheet" href="/assets/index.css">
+    </head>
+    <body>
+        <div id="content">
+            <h2>
+                <a href="https://xkcd.com" target="_blank">
+                    <img src="/assets/xkcd.png" alt="xkcd logo">
+                </a>
+                <br />
+                xkcd.uk
+            </h2>
+            <p>
+                Hi, this is xkcd.uk, a simple xkcd URL shortener / lengthener running off CF workers.
+                When inputting a number, you will be redirected to xkcd.com/<em>number.</em>
+                Otherwise, xkcd.uk conducts a search on DuckDuckGo: <code>\site:xkcd.com <em>string</em></code>,
+                and follows the redirect, leading you to (hopefully) that comic.
+            </p>
+
+            <div class="codecontainer">
+                <!-- 
+                    Sigh....
+                    Yes, yes I did just copy and paste from https://highlightjs.org/demo.
+                    What are you gonna do about it?
+                 -->
+                
+                <code><span class="hljs-keyword">import</span> { load } <span class="hljs-keyword">from</span> <span class="hljs-string">"cheerio"</span>;
+
+<span class="hljs-keyword">const</span> ddg_parsing_regex = <span class="hljs-regexp">/.*\; url=(.*)/</span>
+<span class="hljs-keyword">const</span> xkcd_number_check = <span class="hljs-regexp">/^\/(\d+)$/</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-keyword">async</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-params">request, env, ctx</span>) {
+    <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(request.<span class="hljs-property">url</span>);
+
+    <span class="hljs-keyword">if</span> (xkcd_number_check.<span class="hljs-title function_">test</span>(url.<span class="hljs-property">pathname</span>)) 
+        <span class="hljs-comment">// Hey, they're using a number!</span>
+        <span class="hljs-comment">// Let's redirect them to xkcd.com/$1.</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">redirect</span>(<span class="hljs-string">`https://xkcd.com/<span class="hljs-subst">${xkcd_number_check.exec(url.pathname)?.[<span class="hljs-number">1</span>]}</span>`</span>)
+    <span class="hljs-comment">// Oh, they're not using a number...</span>
+    <span class="hljs-comment">// Let's conduct a search, then.</span>
+    <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">let</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">"https://duckduckgo.com/?q="</span> + <span class="hljs-built_in">encodeURIComponent</span>(<span class="hljs-string">`\\site:xkcd.com <span class="hljs-subst">${url.pathname.slice(<span class="hljs-number">1</span>)}</span>`</span>));
+        <span class="hljs-keyword">let</span> html = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">text</span>()
+        <span class="hljs-keyword">let</span> $ = <span class="hljs-title function_">load</span>(html)
+
+        <span class="hljs-keyword">let</span> content = $(<span class="hljs-string">`meta[http-equiv=refresh]`</span>).<span class="hljs-title function_">get</span>(<span class="hljs-number">0</span>)?.<span class="hljs-property">attribs</span>.<span class="hljs-property">content</span>
+        <span class="hljs-keyword">let</span> ddg_redirect_pathname = content?.<span class="hljs-title function_">match</span>(ddg_parsing_regex)?.[<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">let</span> ddg_url = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">`https://duckduckgo.com<span class="hljs-subst">${ddg_redirect_pathname}</span>`</span>).<span class="hljs-property">searchParams</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">"uddg"</span>)
+        
+        <span class="hljs-keyword">if</span> (content &amp;&amp; ddg_redirect_pathname &amp;&amp; ddg_url) {
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">redirect</span>(ddg_url)
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(html, {<span class="hljs-attr">headers</span>: response.<span class="hljs-property">headers</span>})
+    }
+    },
+};
+                </code>
+            </div>
+
+            <p>
+                For examples, try <a href="https://xkcd.uk/standards">xkcd.uk/standards</a>, or <a href="https://xkcd.uk/927">xkcd.uk/927</a>.
+            </p>
+        </div>
+    </body>
+</html>
