@@ -57,7 +57,7 @@
             <span class="hljs-keyword">let</span> ddg_url = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">`https://duckduckgo.com<span class="hljs-subst">${ddg_redirect_pathname}</span>`</span>).<span class="hljs-property">searchParams</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">"uddg"</span>)
             
             <span class="hljs-keyword">if</span> (content &amp;&amp; ddg_redirect_pathname &amp;&amp; ddg_url) {
-            <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">redirect</span>(ddg_url)
+                <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">redirect</span>(ddg_url)
             }
             <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(html, {<span class="hljs-attr">headers</span>: response.<span class="hljs-property">headers</span>})
         }
