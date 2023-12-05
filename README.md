@@ -46,6 +46,5 @@ export default {
 
 <p align="center">
   <em>^ this is the worker ^</em>
-  <br /> <br />
-For examples, try <a href="https://xkcd.uk/standards">xkcd.uk/standards</a>, or <a href="https://xkcd.uk/927">xkcd.uk/927</a>.
 </p>
+For examples, try <a href="https://xkcd.uk/standards">xkcd.uk/standards</a>, or <a href="https://xkcd.uk/927">xkcd.uk/927</a>.
