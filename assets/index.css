@@ -12,6 +12,7 @@ body {
     max-width: 40em;
     padding: 20px;
     margin: auto;
+    overflow: clip;
 }
 
 h2 {
